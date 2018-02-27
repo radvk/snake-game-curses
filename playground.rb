@@ -2,7 +2,7 @@ require_relative 'snake'
 
 class Playground
   def initialize
-    @win = Window.new(lines,cols,5,0)
+    @win = Window.new(lines, cols, 5, 0)
     @snake = Snake.new
   end
 
@@ -14,8 +14,8 @@ class Playground
     @win.clear
     @win.box(?|,?-)
     print_snake
-    #@win.setpos(@food_y,@food_x)
-    #@win.addstr('*')
+    # @win.setpos(@food_y,@food_x)
+    # @win.addstr('*')
     @win.refresh
   end
 
