@@ -1,20 +1,27 @@
 require 'timeout'
 
 class Snake
-  attr_reader :x, :y, :tail, :lenght
+  attr_reader :x, :y, :tail
+  attr_accessor :length
 
   def initialize(x = 1, y = 2)
     @x = x
     @y = y
     @tail = []
-    @lenght = 3
+    @length = 3
     @dir = :right
+  end
+
+  def tail_collision?
+    tail.any? do |tail_y, tail_x|
+      y == tail_y && x == tail_x
+    end
   end
 
   def handle_movement
     key_pressed = nil
     begin
-      Timeout::timeout(0.05) { key_pressed = getch }
+      Timeout.timeout(0.1) { key_pressed = getch }
     rescue Timeout::Error
     end
     handle_tail
@@ -47,6 +54,6 @@ class Snake
 
   def handle_tail
     tail.unshift([y, x])
-    @tail = tail.first(lenght)
+    @tail = tail.first(length)
   end
 end

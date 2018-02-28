@@ -16,9 +16,7 @@ class Printer
   def draw
     crmode
     loop do
-      top_bar.top_bar
-      playground.handle_movement
-      playground.print
+      playground.play
     end
   ensure
     close_screen
