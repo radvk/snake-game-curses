@@ -1,6 +1,7 @@
 require_relative 'snake'
 require_relative 'food'
 require_relative 'top_bar'
+require_relative 'food_coords_generator'
 
 class Playground
   def initialize
@@ -8,6 +9,7 @@ class Playground
     @snake = Snake.new
     @top_bar = TopBar.new
     @food = nil
+    @time = Time.now
   end
 
   def play
@@ -37,10 +39,8 @@ class Playground
 
   def generate_food
     return unless @food.nil?
-    food_y = rand(2..@win.maxy - 2)
-    food_x = rand(1..@win.maxx - 2)
-    #sprawdzicz czy zarcie nachodzi na weza czyli czy glowa albo ogon ma te same wpolrzedne co zarcie
-    @food = Food.new(food_y, food_x)
+    coords = FoodCoordsGenerator.new(@snake, @win).call
+    @food = Food.new(coords[:y], coords[:x])
   end
 
   def handle_movement
@@ -76,6 +76,14 @@ class Playground
   end
 
   def game_over
-    1 / 0
+    go_win = Window.new(lines, cols, 0, 0)
+    go_win.box('|', '-')
+    go_win.setpos(lines / 2, cols / 2)
+    go_win.addstr('GAME OVER')
+    go_win.setpos(1, 1)
+    go_win.addstr('Your score: ' + @top_bar.score.to_s)
+    go_win.setpos(2, 1)
+    go_win.addstr('Your time: ' + @top_bar.time_passed)
+    exit if go_win.getch
   end
 end
